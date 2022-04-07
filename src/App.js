@@ -1,9 +1,17 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import SideBar from './components/SideBar.component';
+import Home from './pages/Home';
+import Login from './pages/Login';
 import Signup from './pages/Signup';
 
 function App() {
-  return <SideBar />;
+  return (
+    <Routes>
+      <Route path="/*" element={<Home />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
+  );
 }
 
 export default App;

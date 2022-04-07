@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Card, Stack, Typography, Button } from '@mui/material';
 import { CustomTextField } from './Signup';
 
-const AuthScreen = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -94,4 +94,4 @@ const AuthScreen = () => {
   );
 };
 
-export default AuthScreen;
+export default Login;
