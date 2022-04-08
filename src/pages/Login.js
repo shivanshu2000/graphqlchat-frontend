@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Card, Stack, Alert, Typography, Button } from '@mui/material';
 import { useMutation } from '@apollo/client';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 import { LOGIN } from '../graphql/mutations';
 import { CustomTextField } from './Signup';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const [login] = useMutation(LOGIN, {
     onCompleted(data) {
       setLoading(false);
@@ -28,6 +29,9 @@ const Login = () => {
       setLoginError(error.message);
     },
   });
+  if (localStorage.getItem('token')) {
+    return <Navigate to="/" />;
+  }
 
   const handleChange = (e) => {
     setLoginError('');

@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { SIGNUP } from '../graphql/mutations';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 export const CustomTextField = ({
   value,
@@ -61,6 +61,10 @@ const Signup = () => {
       setSignupError(error.message);
     },
   });
+
+  if (localStorage.getItem('token')) {
+    return <Navigate to="/" />;
+  }
 
   console.log('isLoading', loading);
 

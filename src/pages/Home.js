@@ -6,6 +6,7 @@ import SideBar from '../components/SideBar.component';
 import Welcome from '../components/Welcome.component';
 
 const Home = () => {
+  
   if (!localStorage.getItem('token')) {
     return <Navigate to="/login" replace />;
   }
