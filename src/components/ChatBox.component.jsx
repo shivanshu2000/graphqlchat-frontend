@@ -69,7 +69,9 @@ const ChatBox = () => {
       >
         <Toolbar>
           <Avatar
-            src={`https://avatars.dicebear.com/api/initials/asdf.svg`}
+            src={`https://avatars.dicebear.com/api/initials/${
+              name.split('-')[0]
+            }`}
             sx={{
               width: '32px',
               height: '32px',
