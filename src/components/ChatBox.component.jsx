@@ -51,8 +51,8 @@ const ChatBox = () => {
   });
 
   const { data } = useSubscription(SUB_MESSAGE, {
+    fetchPolicy: 'no-cache',
     onSubscriptionData({ subscriptionData: { data } }) {
-      console.log(data);
       setMessages((messages) => [...messages, data.message]);
       executeScroll();
     },
@@ -71,14 +71,14 @@ const ChatBox = () => {
           <Avatar
             src={`https://avatars.dicebear.com/api/initials/${
               name.split('-')[0]
-            }`}
+            }.svg`}
             sx={{
               width: '32px',
               height: '32px',
             }}
           />
           <Typography sx={{ color: 'black', marginLeft: '9px' }} variant="h6">
-            Shivanshu
+            {name.split('-')[0]} {name.split('-')[1]}
           </Typography>
         </Toolbar>
       </AppBar>

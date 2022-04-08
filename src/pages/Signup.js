@@ -80,14 +80,20 @@ const Signup = () => {
     e.preventDefault();
 
     if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.email ||
-      !formData.password
+      formData.firstName.trim().length === 0 ||
+      formData.lastName.trim().length === 0 ||
+      formData.email.trim().length === 0 ||
+      formData.password.trim().length === 0
     ) {
       setFormError('All fields are required!');
       return;
     }
+
+    if (formData.password.trim().length < 5) {
+      setFormError('Password must be at least 5 characters long!');
+      return;
+    }
+
     console.log(formData);
     setLoading(true);
 
@@ -124,7 +130,7 @@ const Signup = () => {
             Signup
           </Typography>
 
-          {!!formError && <Alert severity="error">{error}</Alert>}
+          {!!formError && <Alert severity="error">{formError}</Alert>}
           <CustomTextField
             value={formData.firstName}
             onChange={handleChange}

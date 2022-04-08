@@ -53,7 +53,6 @@ const Login = () => {
         user: formData,
       },
     });
-    console.log(formData);
   };
   return (
     <Box
