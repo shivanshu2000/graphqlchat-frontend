@@ -10,18 +10,21 @@ import { GET_USERS } from '../graphql/queries';
 const SideBar = () => {
   const navigate = useNavigate();
 
-  const { loading, data, error } = useQuery(GET_USERS);
-  
-  if (loading){
-    return <Typography variant='h6'>Loading...</Typography>
+  const { loading, data, error } = useQuery(GET_USERS, {
+    fetchPolicy: 'no-cache',
+  });
+
+  if (loading) {
+    return <Typography variant="h6">Loading...</Typography>;
   }
-  
+
   return (
     <Box backgroundColor="#f7f7f7" height="96.7vh" width="250px" padding="10px">
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h6">Chats</Typography>
         <Box>
           <LogoutIcon
+            cursor="pointer"
             onClick={() => {
               localStorage.removeItem('token');
               navigate('/login');

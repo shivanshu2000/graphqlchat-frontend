@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import {
   AppBar,
   Avatar,
@@ -8,21 +8,28 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import SendIcon from '@mui/icons-material/Send';
 
 import { GET_MESSAGES } from '../graphql/queries';
 import { SEND_MESSAGE } from '../graphql/mutations';
+import { SUB_MESSAGE } from '../graphql/subscriptions';
 import Message from './Message.component';
 
 const ChatBox = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const matches = useMediaQuery('(max-width:500px)');
+  const scrollToBottom = useRef(null);
+
+  const executeScroll = () => {
+    return scrollToBottom.current.scrollIntoView({ inline: 'center' });
+  };
+
   const { id, name } = useParams();
-  const { data, loading, error } = useQuery(GET_MESSAGES, {
+  const { _, loading } = useQuery(GET_MESSAGES, {
     variables: {
       id: +id,
     },
@@ -32,14 +39,23 @@ const ChatBox = () => {
     },
   });
 
+  const useMountEffect = (fun) => useEffect(fun, [fun]);
+
+  useMountEffect(executeScroll);
+
   const [sendMessage] = useMutation(SEND_MESSAGE, {
     onCompleted(data) {
-      setMessages((messages) => [...messages, data.message]);
+      // setMessages((messages) => [...messages, data.message]);
     },
   });
-  console.log(loading, data, error);
 
-  // const sendMessage = () => {};
+  const { data } = useSubscription(SUB_MESSAGE, {
+    onSubscriptionData({ subscriptionData: { data } }) {
+      console.log(data);
+      setMessages((messages) => [...messages, data.message]);
+      executeScroll();
+    },
+  });
 
   return (
     <Box flexGrow={1}>
@@ -68,6 +84,7 @@ const ChatBox = () => {
         sx={{ padding: '3px 5px', overflowY: 'scroll' }}
         backgroundColor="#f5f5f5"
         height="80vh"
+        className="chat__box"
       >
         {loading ? (
           <div>Loading...</div>
@@ -89,6 +106,7 @@ const ChatBox = () => {
             ))}
           </>
         )}
+        <div ref={scrollToBottom} />
       </Box>
       <Stack direction="row">
         <TextField
@@ -106,6 +124,7 @@ const ChatBox = () => {
         />
 
         <SendIcon
+          cursor="pointer"
           fontSize="large"
           onClick={() => {
             if (message.length === 0) return;

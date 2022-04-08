@@ -22,9 +22,7 @@ const UserCard = ({ user }) => {
           height: '32px',
         }}
       />
-      <Typography variant="subtitle2">
-        {user.firstName} {user.lastName}
-      </Typography>
+      <Typography variant="subtitle2">{user.email}</Typography>
     </Stack>
   );
 };
