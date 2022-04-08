@@ -23,3 +23,7 @@ body {
   background: black;
   border-radius: 10px;
 }
+
+label {
+  color: #198bde !important;
+}

@@ -7,6 +7,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import React, { useRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -87,7 +88,9 @@ const ChatBox = () => {
         className="chat__box"
       >
         {loading ? (
-          <div>Loading...</div>
+          <Box textAlign="center" marginTop="15px">
+            <CircularProgress />
+          </Box>
         ) : (
           <>
             {messages.map((message) => (

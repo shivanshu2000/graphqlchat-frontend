@@ -5,7 +5,6 @@ import {
   Stack,
   Alert,
   Typography,
-  CircularProgress,
   Button,
   TextField,
 } from '@mui/material';
@@ -111,7 +110,13 @@ const Signup = () => {
       >
         <Stack direction="column" spacing={2} sx={{ width: '400px' }}>
           {!!signupError && <Alert severity="error">{signupError}</Alert>}
-          <Typography sx={{ textAlign: 'center' }} variant="h5">
+          <Typography
+            fontStyle="italic"
+            fontWeight="bold"
+            color="#6076D2"
+            sx={{ textAlign: 'center' }}
+            variant="h5"
+          >
             Signup
           </Typography>
 
@@ -145,6 +150,21 @@ const Signup = () => {
             label="Password"
             type="password"
           />
+
+          <Typography variant="caption">
+            Already have an account?{' '}
+            <Typography
+              textAlign="center"
+              sx={{
+                cursor: 'pointer',
+              }}
+              onClick={() => navigate('/login')}
+              color="#6076D2"
+              variant="caption"
+            >
+              Login!
+            </Typography>
+          </Typography>
           <Button
             sx={{ marginTop: '30px !important', display: 'block' }}
             variant="outlined"

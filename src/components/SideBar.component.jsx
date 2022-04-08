@@ -1,4 +1,10 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Stack,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
@@ -14,14 +20,11 @@ const SideBar = () => {
     fetchPolicy: 'no-cache',
   });
 
-  if (loading) {
-    return <Typography variant="h6">Loading...</Typography>;
-  }
-
   return (
     <Box backgroundColor="#f7f7f7" height="96.7vh" width="250px" padding="10px">
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h6">Chats</Typography>
+
         <Box>
           <LogoutIcon
             cursor="pointer"
@@ -33,9 +36,17 @@ const SideBar = () => {
         </Box>
       </Stack>
       <Divider />
-      {data.users.map((user, i) => (
-        <UserCard key={i} user={user} />
-      ))}
+      {loading ? (
+        <Box textAlign="center" marginTop="15px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {data.users.map((user, i) => (
+            <UserCard key={i} user={user} />
+          ))}
+        </>
+      )}
     </Box>
   );
 };

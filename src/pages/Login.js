@@ -16,7 +16,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const [login, { _, loading: l }] = useMutation(LOGIN, {
+  const [login] = useMutation(LOGIN, {
     onCompleted(data) {
       setLoading(false);
       localStorage.setItem('token', data.user.token);
@@ -67,8 +67,14 @@ const Login = () => {
         variant="outlined"
       >
         <Stack direction="column" spacing={2} sx={{ width: '400px' }}>
-          <Typography sx={{ textAlign: 'center' }} variant="h5">
-            Login
+          <Typography
+            fontStyle="italic"
+            fontWeight="bold"
+            color="#6076D2"
+            sx={{ textAlign: 'center' }}
+            variant="h5"
+          >
+            Signin
           </Typography>
           {!!loginError && <Alert severity="error">{loginError}</Alert>}
 
@@ -87,6 +93,20 @@ const Login = () => {
             label="Password"
             type="password"
           />
+          <Typography variant="caption">
+            Don't have an account?{' '}
+            <Typography
+              sx={{
+                cursor: 'pointer',
+              }}
+              textAlign="center"
+              onClick={() => navigate('/signup')}
+              color="#6076D2"
+              variant="caption"
+            >
+              Signup!
+            </Typography>
+          </Typography>
           <Button
             sx={{ marginTop: '30px !important', display: 'block' }}
             variant="outlined"
