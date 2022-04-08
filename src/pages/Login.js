@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Card, Stack, Typography, Button } from '@mui/material';
+import { Box, Card, Stack, Alert, Typography, Button } from '@mui/material';
+import { useMutation } from '@apollo/client';
+
+import { LOGIN } from '../graphql/mutations';
 import { CustomTextField } from './Signup';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,10 +12,25 @@ const Login = () => {
     password: '',
   });
 
-  const [error, setError] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const [login, { _, loading: l }] = useMutation(LOGIN, {
+    onCompleted(data) {
+      setLoading(false);
+      localStorage.setItem('token', data.user.token);
+      navigate('/');
+    },
+
+    onError(error) {
+      setLoading(false);
+      setLoginError(error.message);
+    },
+  });
 
   const handleChange = (e) => {
-    setError('');
+    setLoginError('');
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -20,15 +39,16 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.email ||
-      !formData.password
-    ) {
-      setError('All fields are required!');
+    if (!formData.email || !formData.password) {
+      setLoginError('All fields are required!');
       return;
     }
+    setLoading(true);
+    login({
+      variables: {
+        user: formData,
+      },
+    });
     console.log(formData);
   };
   return (
@@ -50,21 +70,7 @@ const Login = () => {
           <Typography sx={{ textAlign: 'center' }} variant="h5">
             Login
           </Typography>
-          {!!error && (
-            <Typography
-              sx={{
-                textAlign: 'center',
-                border: '1px solid red',
-                backgroundColor: '#ff000040',
-                padding: '7px 5px',
-                color: 'white',
-                fontWeight: 'bold',
-                borderRadius: '5px',
-              }}
-            >
-              {error}
-            </Typography>
-          )}
+          {!!loginError && <Alert severity="error">{loginError}</Alert>}
 
           <CustomTextField
             value={formData.email}
@@ -84,9 +90,9 @@ const Login = () => {
           <Button
             sx={{ marginTop: '30px !important', display: 'block' }}
             variant="outlined"
-            type="submit"
+            type={loading ? 'button' : 'submit'}
           >
-            Login
+            {loading ? 'Signing in...' : 'Sign in'}
           </Button>
         </Stack>
       </Card>

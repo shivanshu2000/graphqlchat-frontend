@@ -1,6 +1,6 @@
 import { Avatar, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
@@ -10,17 +10,21 @@ const UserCard = ({ user }) => {
       className="user"
       direction="row"
       spacing={2}
-      onClick={() => navigate(`/${1}/${'shivanshu'}`)}
+      onClick={() =>
+        navigate(`/${user.id}/${user.firstName + '-' + user.lastName}`)
+      }
       sx={{ py: 1, alignItems: 'center' }}
     >
       <Avatar
-        src={`https://avatars.dicebear.com/api/initials/asdf.svg`}
+        src={`https://avatars.dicebear.com/api/initials/${user.firstName}.svg`}
         sx={{
           width: '32px',
           height: '32px',
         }}
       />
-      <Typography variant="subtitle2">Name</Typography>
+      <Typography variant="subtitle2">
+        {user.firstName} {user.lastName}
+      </Typography>
     </Stack>
   );
 };

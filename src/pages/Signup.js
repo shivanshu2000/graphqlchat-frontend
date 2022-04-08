@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Card, Stack, Typography, Button, TextField } from '@mui/material';
+import {
+  Box,
+  Card,
+  Stack,
+  Alert,
+  Typography,
+  CircularProgress,
+  Button,
+  TextField,
+} from '@mui/material';
+import { useMutation } from '@apollo/client';
+import { SIGNUP } from '../graphql/mutations';
+import { useNavigate } from 'react-router-dom';
 
 export const CustomTextField = ({
   value,
@@ -31,10 +43,30 @@ const Signup = () => {
     password: '',
   });
 
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const [formError, setFormError] = useState('');
+  const [signupError, setSignupError] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const [signup, { data, _, error }] = useMutation(SIGNUP, {
+    onCompleted(data) {
+      console.log('completed');
+      setLoading(false);
+      navigate('/login');
+    },
+
+    onError(error) {
+      console.log('error is: ', error, error.message);
+      setLoading(false);
+      setSignupError(error.message);
+    },
+  });
+
+  console.log('isLoading', loading);
 
   const handleChange = (e) => {
-    setError('');
+    setFormError('');
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -50,10 +82,17 @@ const Signup = () => {
       !formData.email ||
       !formData.password
     ) {
-      setError('All fields are required!');
+      setFormError('All fields are required!');
       return;
     }
     console.log(formData);
+    setLoading(true);
+
+    signup({
+      variables: {
+        user: formData,
+      },
+    });
   };
   return (
     <Box
@@ -71,25 +110,12 @@ const Signup = () => {
         variant="outlined"
       >
         <Stack direction="column" spacing={2} sx={{ width: '400px' }}>
+          {!!signupError && <Alert severity="error">{signupError}</Alert>}
           <Typography sx={{ textAlign: 'center' }} variant="h5">
             Signup
           </Typography>
 
-          {!!error && (
-            <Typography
-              sx={{
-                textAlign: 'center',
-                border: '1px solid red',
-                backgroundColor: '#ff000040',
-                padding: '7px 5px',
-                color: 'white',
-                fontWeight: 'bold',
-                borderRadius: '5px',
-              }}
-            >
-              {error}
-            </Typography>
-          )}
+          {!!formError && <Alert severity="error">{error}</Alert>}
           <CustomTextField
             value={formData.firstName}
             onChange={handleChange}
@@ -122,9 +148,9 @@ const Signup = () => {
           <Button
             sx={{ marginTop: '30px !important', display: 'block' }}
             variant="outlined"
-            type="submit"
+            type={loading ? 'button' : 'submit'}
           >
-            Signup
+            {loading ? 'Signing up...' : 'Signup'}
           </Button>
         </Stack>
       </Card>
