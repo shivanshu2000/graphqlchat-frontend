@@ -1,9 +1,11 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Avatar, Stack, Typography, useMediaQuery } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
+
+  const matches = useMediaQuery('(max-width:480px)');
 
   return (
     <Stack
@@ -18,8 +20,8 @@ const UserCard = ({ user }) => {
       <Avatar
         src={`https://avatars.dicebear.com/api/initials/${user.firstName}.svg`}
         sx={{
-          width: '32px',
-          height: '32px',
+          width: matches ? '24px' : '32px',
+          height: matches ? '24px' : '32px',
         }}
       />
       <Typography variant="subtitle2">

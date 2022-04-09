@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Card, Stack, Alert, Typography, Button } from '@mui/material';
+import {
+  Box,
+  Card,
+  Stack,
+  Alert,
+  Typography,
+  Button,
+  useMediaQuery,
+} from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { useNavigate, Navigate } from 'react-router-dom';
 
@@ -16,7 +24,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
+  const matches = useMediaQuery('(max-width:600px)');
   const [login] = useMutation(LOGIN, {
     onCompleted(data) {
       setLoading(false);
@@ -69,7 +77,11 @@ const Login = () => {
         }}
         variant="outlined"
       >
-        <Stack direction="column" spacing={2} sx={{ width: '400px' }}>
+        <Stack
+          direction="column"
+          spacing={2}
+          sx={matches ? { maxWidth: '600px' } : { width: '400px' }}
+        >
           <Typography
             fontStyle="italic"
             fontWeight="bold"

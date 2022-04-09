@@ -77,7 +77,11 @@ const ChatBox = () => {
               height: '32px',
             }}
           />
-          <Typography sx={{ color: 'black', marginLeft: '9px' }} variant="h6">
+          <Typography
+            sx={{ color: 'black', marginLeft: '9px' }}
+            variant={matches ? 'subtitle2' : 'h6'}
+            ellipsis
+          >
             {name.split('-')[0]} {name.split('-')[1]}
           </Typography>
         </Toolbar>

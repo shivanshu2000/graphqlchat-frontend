@@ -4,7 +4,7 @@ import React from 'react';
 const Welcome = () => {
   return (
     <Stack flexGrow={1} justifyContent="center" alignItems="center">
-      <Typography variant="subtitle2">
+      <Typography variant="subtitle2" textAlign="center">
         Select a user to start a conversation with!
       </Typography>
     </Stack>

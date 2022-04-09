@@ -13,9 +13,9 @@ const Message = ({ message, date, direction = 'start' }) => {
           backgroundColor="white"
         >
           <Typography
+            variant="subtitle2"
             style={{ flexGrow: 1 }}
             marginRight="7px"
-            variant="subtitle2"
           >
             {message}
           </Typography>

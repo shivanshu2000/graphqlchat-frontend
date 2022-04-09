@@ -4,6 +4,7 @@ import {
   Stack,
   CircularProgress,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import React from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -16,14 +17,20 @@ import { GET_USERS } from '../graphql/queries';
 const SideBar = () => {
   const navigate = useNavigate();
 
+  const matches = useMediaQuery('(max-width:480px)');
   const { loading, data, error } = useQuery(GET_USERS, {
     fetchPolicy: 'no-cache',
   });
 
   return (
-    <Box backgroundColor="#f7f7f7" height="96.7vh" width="250px" padding="10px">
+    <Box
+      backgroundColor="#f7f7f7"
+      height="96.7vh"
+      sx={matches ? { maxWidth: '250px' } : { width: '250px' }}
+      padding="10px"
+    >
       <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6">Chats</Typography>
+        <Typography variant={matches? "subtitle2" :"h6"}>Chats</Typography>
 
         <Box>
           <LogoutIcon

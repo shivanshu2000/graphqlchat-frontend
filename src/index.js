@@ -10,12 +10,12 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 
 const httpLink = new HttpLink({
-  uri: 'https://graphql-chat-backend20.herokuapp.com/graphql',
+  uri: process.env.BACKEND_URL,
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'wss://graphql-chat-backend20.herokuapp.com/graphql',
+    url: process.env.WS_URL,
   })
 );
 

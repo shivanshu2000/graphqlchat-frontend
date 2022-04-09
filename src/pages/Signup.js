@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   TextField,
+  useMediaQuery,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { SIGNUP } from '../graphql/mutations';
@@ -48,6 +49,8 @@ const Signup = () => {
 
   const [loading, setLoading] = useState(false);
 
+  
+  const matches = useMediaQuery('(max-width:600px)');
   const [signup, { data, _, error }] = useMutation(SIGNUP, {
     onCompleted(data) {
       console.log('completed');
@@ -118,7 +121,7 @@ const Signup = () => {
         }}
         variant="outlined"
       >
-        <Stack direction="column" spacing={2} sx={{ width: '400px' }}>
+        <Stack direction="column" spacing={2} sx={matches ? {maxWidth:'600px'}:{ width: '400px' }}>
           {!!signupError && <Alert severity="error">{signupError}</Alert>}
           <Typography
             fontStyle="italic"
