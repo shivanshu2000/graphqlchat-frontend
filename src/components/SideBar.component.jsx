@@ -6,7 +6,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +20,14 @@ const SideBar = () => {
   const matches = useMediaQuery('(max-width:480px)');
   const { loading, data, error } = useQuery(GET_USERS, {
     fetchPolicy: 'no-cache',
+
+    onError(error) {
+      console.log('error is: ', error.message);
+      if (error && error.message === 'Not Authorized') {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    },
   });
 
   return (
@@ -30,7 +38,7 @@ const SideBar = () => {
       padding="10px"
     >
       <Stack direction="row" justifyContent="space-between">
-        <Typography variant={matches? "subtitle2" :"h6"}>Chats</Typography>
+        <Typography variant={matches ? 'subtitle2' : 'h6'}>Chats</Typography>
 
         <Box>
           <LogoutIcon
@@ -49,7 +57,7 @@ const SideBar = () => {
         </Box>
       ) : (
         <>
-          {data.users.map((user, i) => (
+          {data?.users?.map((user, i) => (
             <UserCard key={i} user={user} />
           ))}
         </>

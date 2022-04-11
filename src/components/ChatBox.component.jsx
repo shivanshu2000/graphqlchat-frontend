@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import React, { useRef, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -23,6 +23,8 @@ const ChatBox = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const matches = useMediaQuery('(max-width:500px)');
+  const navigate = useNavigate();
+
   const scrollToBottom = useRef(null);
 
   const executeScroll = () => {
@@ -30,13 +32,20 @@ const ChatBox = () => {
   };
 
   const { id, name } = useParams();
-  const { _, loading } = useQuery(GET_MESSAGES, {
+  const { loading } = useQuery(GET_MESSAGES, {
     variables: {
       id: +id,
     },
 
     onCompleted(data) {
       setMessages(data.messages);
+    },
+
+    onError(error) {
+      if (error && error.message === 'Not Authorized') {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
     },
   });
 
@@ -80,7 +89,6 @@ const ChatBox = () => {
           <Typography
             sx={{ color: 'black', marginLeft: '9px' }}
             variant={matches ? 'subtitle2' : 'h6'}
-            ellipsis
           >
             {name.split('-')[0]} {name.split('-')[1]}
           </Typography>
