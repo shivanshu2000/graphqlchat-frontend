@@ -10,12 +10,12 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 
 const httpLink = new HttpLink({
-  uri: process.env.BACKEND_URL,
+  uri: 'https://chat-api-v22x.onrender.com/graphql',
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: process.env.WS_URL,
+    url: 'wss://chat-api-v22x.onrender.com/graphql',
   })
 );
 
